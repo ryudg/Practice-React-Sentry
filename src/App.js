@@ -1,6 +1,7 @@
 import "./App.css";
 import ErrorBoundary from "./ErrorBoundary";
 import User from "./User";
+import * as Sentry from "@sentry/react";
 
 function App() {
   const user = {
@@ -17,4 +18,4 @@ function App() {
   );
 }
 
-export default App;
+export default Sentry.withProfiler(App);
