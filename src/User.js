@@ -31,24 +31,21 @@ import React from "react";
 // }
 
 // 예시 : 3
-function Users({ users, onToggle }) {
-  if (!users) return null;
+function Users({ user }) {
+  // if (!user) {
+  //   return null;
+  // }
 
   return (
-    <ul>
-      {users.map((user) => (
-        <li key={user.id} onClick={() => onToggle(user.id)}>
-          {user.username}
-        </li>
-      ))}
-    </ul>
+    <div>
+      <div>
+        <b>ID</b>: {user.id}
+      </div>
+      <div>
+        <b>Username:</b> {user.username}
+      </div>
+    </div>
   );
 }
-
-Users.defaultProps = {
-  onToggle: () => {
-    console.warn("onToggle is missing!");
-  },
-};
 
 export default Users;

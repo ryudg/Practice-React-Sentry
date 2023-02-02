@@ -1,4 +1,5 @@
 import "./App.css";
+import ErrorBoundary from "./ErrorBoundary";
 import User from "./User";
 
 function App() {
@@ -9,7 +10,9 @@ function App() {
   return (
     <>
       <h1>App</h1>
-      <User user={user} />
+      <ErrorBoundary>
+        <User />
+      </ErrorBoundary>
     </>
   );
 }
