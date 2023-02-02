@@ -112,6 +112,80 @@ Users.defaultProps = {
 - 에러를 방지하기 위해선 onToggle 을 props 로 넣어주는 것을 까먹지 않기 위해서 위와 같이 `defaultProps` 설정을 해주는 방법이 있다.
 
 # 2. componentDidCatch 로 에러 잡아내기
+```javascript
+// /src/ErrorBoundary.js
 
+import React, { Component } from "react";
 
+class ErrorBoundary extends Component {
+  state = {
+    error: false,
+  };
 
+  componentDidCatch(error, info) {
+    console.log("에러가 발생했습니다.");
+    console.log({
+      error,
+      info,
+    });
+    this.setState({
+      error: true,
+    });
+  }
+
+  render() {
+    if (this.state.error) {
+      return <h1>에러 발생!</h1>;
+    }
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+```
+- `componentDidCatch`는 두개의 파라미터를 사용하는데 (error, info)
+  - 첫번째 파라미터 error 는 에러의 내용
+  - 두번째 파라미터 info 는 에러가 발생한 위치
+  
+- App.js를 `ErrorBoundary` 컴포넌트로 감싸고
+```javascript
+// App.js
+
+...
+
+return (
+    <ErrorBoundary>
+      <User />
+    </ErrorBoundary>
+  );
+  
+...
+```
+
+- `User` 컴포넌트에서 null checking 을 하는 코드를 주석을 제거하면
+```javascript
+// User.js
+...
+
+// if (!user) {
+//   return null;
+// }
+
+...
+```
+- 에러가 나지만 흰 화면이 아닌 `ErrorBoundary` 컴포넌트에서 작성한 에러 발생! 문구가 나오게 된다.
+- `componentDidCatch` 를 사용해서 앱에서 에러가 발생했을 때 사용자에게 에러가 발생했음을 인지시켜줄 수 는 있지만, <br>
+  `componentDidCatch` 가 실제로 호출되는 일은 서비스에서 "없어야 하는게" 맞다.
+- 만약 놓친 에러가 있다면, 이를 알아내어 예외 처리를 해주어야 하고
+- 개발자는 발견해내지 못했지만, 사용자가 발견하게 되는 그런 오류를 `componentDidCatch` 에서 `error` 와 `info` 값을 네트워크를 통하여 다른 곳으로 전달해주어야 한다.
+- 하지만 이를 위해 서버를 따로 만드는 것은 번거롭기 때문에 Sentry를 사용한다.
+
+# 2. Sentry
+  
+  
+  
+  
+  
+  
+  
+  
